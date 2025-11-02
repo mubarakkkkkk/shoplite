@@ -5,12 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "build": "vite build",
     "preview": "vite preview",
-    "api": "json-server --watch db.json --port 5174",
-    "test": "vitest",
-     "serve": "vite preview --port 4173"
+    "serve": "vite preview --port 4173 --host"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
