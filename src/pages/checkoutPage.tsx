@@ -49,27 +49,28 @@ export const CheckoutPage = () => {
   const tax = subtotal * 0.1;
   const total = subtotal + tax;
 
-  const onSubmit = async (data: CheckoutForm) => {
-    setIsSubmitting(true);
+ const onSubmit = async (data: CheckoutForm) => {
+  setIsSubmitting(true);
 
-    try {
-      await createOrder({
-        userId: user!.id,
-        items,
-        total,
-        shippingInfo: data,
-      });
+  try {
+    const userId = user?.id || '1';
+    
+    await createOrder({
+      userId: userId,
+      items,
+      total: total,
+      shippingInfo: data,
+    });
 
-      dispatch(clearCart());
-      setOrderComplete(true);
-    } catch (error) {
-      console.error('Error creating order:', error);
-      alert('Failed to create order');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+    dispatch(clearCart());
+    setOrderComplete(true);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    alert('Failed to create order. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   if (orderComplete) {
     return (
       <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-100 flex items-center justify-center p-4">
