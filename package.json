@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "api": "json-server --watch db.json --port 5174",
-    "test": "vitest"
+    "test": "vitest",
+     "serve": "vite preview --port 4173"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
