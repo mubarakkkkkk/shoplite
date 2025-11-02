@@ -30,13 +30,11 @@ export const Layout = () => {
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  const navigation = [
-    { name: 'Products', path: '/products', icon: Home },
-    ...(isAuthenticated ? [
-      { name: 'Orders', path: '/orders', icon: Package },
-      { name: 'Cart', path: '/cart', icon: ShoppingCart },
-    ] : []),
-  ];
+const navigation = [
+  { name: 'Products', path: '/products', icon: Home },
+  { name: 'Orders', path: '/orders', icon: Package },
+  { name: 'Cart', path: '/cart', icon: ShoppingCart },
+];
 
   const isActivePath = (path: string) => location.pathname === path;
 

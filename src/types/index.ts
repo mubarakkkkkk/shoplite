@@ -1,9 +1,3 @@
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
 export interface Product {
   id: string;
   name: string;
@@ -12,21 +6,11 @@ export interface Product {
   image: string;
   description: string;
   stock: number;
-  originalPrice?: number
 }
 
 export interface CartItem {
   product: Product;
   quantity: number;
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  items: CartItem[];
-  total: number;
-  date: string;
-  shippingInfo: ShippingInfo;
 }
 
 export interface ShippingInfo {
@@ -35,4 +19,19 @@ export interface ShippingInfo {
   address: string;
   city: string;
   zipCode: string;
+}
+
+export interface Order {
+  id: string;
+  userId?: string;
+  items: CartItem[];
+  total: number;
+  shippingInfo: ShippingInfo;
+  date: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
 }

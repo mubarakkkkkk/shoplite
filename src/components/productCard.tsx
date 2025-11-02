@@ -110,13 +110,8 @@ export const ProductCard = ({ product, index = 0, viewMode = 'grid' }: ProductCa
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-3xl font-bold text-blue-600">
-                  ${product.price.toFixed(2)}
+                  ₦{product.price.toFixed(2)}
                 </span>
-                {product.originalPrice && (
-                  <span className="text-lg text-gray-400 line-through">
-                    ${product.originalPrice.toFixed(2)}
-                  </span>
-                )}
               </div>
 
               <div className="flex items-center gap-3">
@@ -146,7 +141,6 @@ export const ProductCard = ({ product, index = 0, viewMode = 'grid' }: ProductCa
     );
   }
 
-  // Grid View
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -232,13 +226,8 @@ export const ProductCard = ({ product, index = 0, viewMode = 'grid' }: ProductCa
         <div className="flex items-center justify-between">
           <div>
             <p className="text-2xl font-bold text-blue-600">
-              ${product.price.toFixed(2)}
+              ₦{product.price.toFixed(2)}
             </p>
-            {product.originalPrice && (
-              <p className="text-sm text-gray-400 line-through">
-                ${product.originalPrice.toFixed(2)}
-              </p>
-            )}
           </div>
 
           <motion.button

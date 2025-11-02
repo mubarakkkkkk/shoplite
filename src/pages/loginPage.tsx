@@ -2,14 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/useRedux';
 import { loginSuccess } from '../store/authSlice';
-import { loginUser } from '../api';
 import { motion } from 'framer-motion';
 import { 
   Mail, 
   Lock, 
   LogIn, 
-  Eye, 
-  EyeOff, 
   ShoppingBag,
   Loader2
 } from 'lucide-react';
@@ -17,30 +14,24 @@ import {
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
-    try {
-      const result = await loginUser(email, password);
-      dispatch(loginSuccess(result));
-      navigate('/products');
-    } catch (err) {
-      setError('Invalid email or password. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    const user = {
+      id: '1',
+      email: email || 'demo@user.com',
+      name: email.split('@')[0] || 'Demo User'
+    };
+
+    dispatch(loginSuccess(user));
+    navigate('/products');
   };
 
   return (
@@ -63,8 +54,7 @@ export const LoginPage = () => {
               <ShoppingBag className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to your ShopLite account</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to ShopLite</h1>         
         </motion.div>
 
         {/* Login Card */}
@@ -88,8 +78,7 @@ export const LoginPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your email"
-                  required
+                  placeholder="Enter any email"
                 />
               </div>
             </div>
@@ -103,36 +92,14 @@ export const LoginPage = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your password"
-                  required
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Enter any password"
                 />
-                <button
-                  type="button"
-                  onClick={togglePasswordVisibility}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
               </div>
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="bg-red-50 border border-red-200 rounded-xl p-4"
-              >
-                <p className="text-red-700 text-sm flex items-center gap-2">
-                  <Lock className="w-4 h-4" />
-                  {error}
-                </p>
-              </motion.div>
-            )}
 
             {/* Login Button */}
             <motion.button
@@ -154,38 +121,7 @@ export const LoginPage = () => {
                 </>
               )}
             </motion.button>
-          </form>
-
-          {/* Demo Credentials */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200"
-          >
-            <p className="text-xs text-gray-600 text-center">
-              <strong>Demo Credentials:</strong><br />
-              test@example.com / password123
-            </p>
-          </motion.div>
-        </motion.div>
-
-        {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-center mt-6"
-        >
-          <p className="text-sm text-gray-500">
-            Don't have an account?{' '}
-            <button 
-              onClick={() => navigate('/signup')}
-              className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
-            >
-              Sign up
-            </button>
-          </p>
+          </form>      
         </motion.div>
       </motion.div>
     </div>

@@ -24,10 +24,8 @@ export const OrdersPage = () => {
   }, []);
 
   const loadOrders = async () => {
-    if (!user) return;
-
     try {
-      const data = await fetchUserOrders(user.id);
+      const data = await fetchUserOrders(user?.id || '1');
       setOrders(data);
     } catch (error) {
       console.error('Error loading orders:', error);
@@ -150,7 +148,7 @@ export const OrdersPage = () => {
                         </div>
                       </div>
                       <span className="font-semibold text-gray-900">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        ₦{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -180,7 +178,7 @@ export const OrdersPage = () => {
                     Total Amount
                   </span>
                   <span className="text-2xl font-bold text-blue-600">
-                    ${order.total.toFixed(2)}
+                    ₦{order.total.toFixed(2)}
                   </span>
                 </div>
               </div>

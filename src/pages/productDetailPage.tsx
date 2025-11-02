@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchProductById } from '../api';
-import type { Product } from '../types';
-import { useAppDispatch } from '../hooks/useRedux';
-import { addToCart } from '../store/cartSlice';
-import { motion } from 'framer-motion';
-import { 
-  ArrowLeft, 
-  ShoppingCart, 
-  Package, 
-  Star, 
-  Plus, 
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchProductById } from "../api";
+import type { Product } from "../types";
+import { useAppDispatch } from "../hooks/useRedux";
+import { addToCart } from "../store/cartSlice";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ShoppingCart,
+  Package,
+  Star,
+  Plus,
   Minus,
   Truck,
   Shield,
-  Heart
-} from 'lucide-react';
+  Heart,
+} from "lucide-react";
 
 export const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,12 +32,12 @@ export const ProductDetailPage = () => {
 
   const loadProduct = async () => {
     if (!id) return;
-    
+
     try {
       const data = await fetchProductById(id);
       setProduct(data);
     } catch (error) {
-      console.error('Error loading product:', error);
+      console.error("Error loading product:", error);
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,6 @@ export const ProductDetailPage = () => {
       for (let i = 0; i < quantity; i++) {
         dispatch(addToCart(product));
       }
-      // You could replace this with a toast notification
     }
   };
 
@@ -74,10 +73,14 @@ export const ProductDetailPage = () => {
       <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
-            <p className="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Product Not Found
+            </h2>
+            <p className="text-gray-600 mb-8">
+              The product you're looking for doesn't exist.
+            </p>
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate("/products")}
               className="bg-linear-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200"
             >
               Back to Products
@@ -94,7 +97,7 @@ export const ProductDetailPage = () => {
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          onClick={() => navigate('/products')}
+          onClick={() => navigate("/products")}
           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-8 group"
         >
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
@@ -115,21 +118,25 @@ export const ProductDetailPage = () => {
                 alt={product.name}
                 className="w-full h-96 object-contain rounded-xl"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://placehold.co/600x600/e2e8f0/64748b?text=No+Image';
+                  e.currentTarget.src =
+                    "https://placehold.co/600x600/e2e8f0/64748b?text=No+Image";
                 }}
               />
             </div>
-            
+
             {/* Favorite Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsFavorite(!isFavorite)}
               className={`absolute top-4 right-4 p-3 rounded-full shadow-lg ${
-                isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-400'
+                isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-400"
               } hover:bg-red-500 hover:text-white transition-all duration-200`}
             >
-              <Heart className="w-6 h-6" fill={isFavorite ? 'currentColor' : 'none'} />
+              <Heart
+                className="w-6 h-6"
+                fill={isFavorite ? "currentColor" : "none"}
+              />
             </motion.button>
           </motion.div>
 
@@ -152,34 +159,45 @@ export const ProductDetailPage = () => {
               </div>
 
               {/* Product Name */}
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                {product.name}
+              </h1>
 
               {/* Price */}
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-4xl font-bold text-blue-600">
                   ${product.price.toFixed(2)}
                 </span>
-                {product.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">
-                    ${product.originalPrice.toFixed(2)}
-                  </span>
-                )}
               </div>
 
               {/* Description */}
-              <p className="text-gray-700 text-lg mb-8 leading-relaxed">{product.description}</p>
+              <p className="text-gray-700 text-lg mb-8 leading-relaxed">
+                {product.description}
+              </p>
 
               {/* Stock Status */}
               <div className="flex items-center gap-2 mb-6">
-                <Package className={`w-5 h-5 ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`} />
-                <span className={`font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {product.stock > 0 ? `${product.stock} items in stock` : 'Out of stock'}
+                <Package
+                  className={`w-5 h-5 ${
+                    product.stock > 0 ? "text-green-600" : "text-red-600"
+                  }`}
+                />
+                <span
+                  className={`font-medium ${
+                    product.stock > 0 ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {product.stock > 0
+                    ? `${product.stock} items in stock`
+                    : "Out of stock"}
                 </span>
               </div>
 
               {/* Quantity Selector */}
               <div className="mb-8">
-                <label className="font-medium text-gray-700 mb-3 block">Quantity:</label>
+                <label className="font-medium text-gray-700 mb-3 block">
+                  Quantity:
+                </label>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-3">
                     <motion.button
@@ -191,11 +209,11 @@ export const ProductDetailPage = () => {
                     >
                       <Minus className="w-5 h-5" />
                     </motion.button>
-                    
+
                     <span className="w-16 text-center text-xl font-bold text-gray-900">
                       {quantity}
                     </span>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -206,7 +224,7 @@ export const ProductDetailPage = () => {
                       <Plus className="w-5 h-5" />
                     </motion.button>
                   </div>
-                  
+
                   <div className="text-sm text-gray-500">
                     Max: {product.stock} items
                   </div>
@@ -222,7 +240,7 @@ export const ProductDetailPage = () => {
                 className="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg mb-4"
               >
                 <ShoppingCart className="w-6 h-6" />
-                {product.stock > 0 ? `Add ${quantity} to Cart` : 'Out of Stock'}
+                {product.stock > 0 ? `Add ${quantity} to Cart` : "Out of Stock"}
               </motion.button>
 
               {/* Features */}
