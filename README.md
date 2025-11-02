@@ -1,73 +1,280 @@
-# React + TypeScript + Vite
+# 🛍️ ShopLite - E-commerce Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive e-commerce web application built with React, TypeScript, Redux, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start Guide
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Follow these steps to run the project locally on your machine.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📋 Prerequisites
 
-## Expanding the ESLint configuration
+Make sure you have these installed:
+- **Node.js** (v20 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Check if installed:
+```bash
+node --version
+npm --version
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔧 Installation Steps
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Step 1: Clone the Repository
+```bash
+git clone <repository-url>
+cd shoplite
 ```
+
+### Step 2: Install Dependencies
+```bash
+npm install
+```
+
+This will install all required packages. Wait for it to complete (may take 2-3 minutes).
+
+### Step 3: Verify db.json Exists
+
+Make sure there's a `db.json` file in the root directory (same folder as package.json).
+
+**If it's missing, create it with this content:**
+```json
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "test@example.com",
+      "password": "password123",
+      "name": "Quadri"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Wireless Headphones",
+      "price": 79.99,
+      "category": "Electronics",
+      "image": "/images/headphones.jpg",
+      "description": "High-quality wireless headphones with noise cancellation",
+      "stock": 15
+    },
+    {
+      "id": "2",
+      "name": "Smart Watch",
+      "price": 199.99,
+      "category": "Electronics",
+      "image": "/images/watch.jpg",
+      "description": "Fitness tracking smartwatch with heart rate monitor",
+      "stock": 8
+    },
+    {
+      "id": "3",
+      "name": "Running Shoes",
+      "price": 89.99,
+      "category": "Sports",
+      "image": "/images/shoes.jpg",
+      "description": "Comfortable running shoes for all terrains",
+      "stock": 20
+    },
+    {
+      "id": "4",
+      "name": "Coffee Maker",
+      "price": 129.99,
+      "category": "Home",
+      "image": "/images/coffee.jpg",
+      "description": "Programmable coffee maker with timer",
+      "stock": 12
+    },
+    {
+      "id": "5",
+      "name": "Yoga Mat",
+      "price": 29.99,
+      "category": "Sports",
+      "image": "/images/yoga.jpg",
+      "description": "Non-slip yoga mat with carrying strap",
+      "stock": 30
+    },
+    {
+      "id": "6",
+      "name": "Bluetooth Speaker",
+      "price": 49.99,
+      "category": "Electronics",
+      "image": "/images/speaker.jpg",
+      "description": "Portable waterproof bluetooth speaker",
+      "stock": 25
+    },
+    {
+      "id": "7",
+      "name": "Desk Lamp",
+      "price": 39.99,
+      "category": "Home",
+      "image": "/images/lamp.jpg",
+      "description": "LED desk lamp with adjustable brightness",
+      "stock": 18
+    },
+    {
+      "id": "8",
+      "name": "Backpack",
+      "price": 59.99,
+      "category": "Accessories",
+      "image": "/images/backpack.jpg",
+      "description": "Durable laptop backpack with multiple compartments",
+      "stock": 22
+    },
+    {
+      "id": "9",
+      "name": "Water Bottle",
+      "price": 19.99,
+      "category": "Sports",
+      "image": "/images/bottle.jpg",
+      "description": "Insulated stainless steel water bottle",
+      "stock": 40
+    },
+    {
+      "id": "10",
+      "name": "Phone Case",
+      "price": 24.99,
+      "category": "Accessories",
+      "image": "/images/case.jpg",
+      "description": "Protective phone case with kickstand",
+      "stock": 35
+    }
+  ],
+  "orders": [
+    {
+      "id": "40dd",
+      "userId": "1",
+      "items": [
+        {
+          "product": {
+            "id": "9",
+            "name": "Water Bottle",
+            "price": 19.99,
+            "category": "Sports",
+            "image": "/images/bottle.jpg",
+            "description": "Insulated stainless steel water bottle",
+            "stock": 40
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 21.988999999999997,
+      "shippingInfo": {
+        "name": "abiola sofiya",
+        "email": "admin@easypilot.com",
+        "address": "1 aliu banire street",
+        "city": "ojo",
+        "zipCode": "102101"
+      },
+      "date": "2025-11-01T18:04:48.940Z"
+    },
+    {
+      "id": "67f0",
+      "userId": "1",
+      "items": [
+        {
+          "product": {
+            "id": "9",
+            "name": "Water Bottle",
+            "price": 19.99,
+            "category": "Sports",
+            "image": "/images/bottle.jpg",
+            "description": "Insulated stainless steel water bottle",
+            "stock": 40
+          },
+          "quantity": 1
+        },
+        {
+          "product": {
+            "id": "10",
+            "name": "Phone Case",
+            "price": 24.99,
+            "category": "Accessories",
+            "image": "/images/case.jpg",
+            "description": "Protective phone case with kickstand",
+            "stock": 35
+          },
+          "quantity": 1
+        },
+        {
+          "product": {
+            "id": "7",
+            "name": "Desk Lamp",
+            "price": 39.99,
+            "category": "Home",
+            "image": "/images/lamp.jpg",
+            "description": "LED desk lamp with adjustable brightness",
+            "stock": 18
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 93.467,
+      "shippingInfo": {
+        "name": "Abiola Mubarak",
+        "email": "olateju024@gmail.com",
+        "address": "Qarib mosque",
+        "city": "Osogbo",
+        "zipCode": "102101"
+      },
+      "date": "2025-11-02T05:46:21.272Z"
+    },
+    {
+      "id": "ba9e",
+      "items": [
+        {
+          "product": {
+            "id": "7",
+            "name": "Desk Lamp",
+            "price": 39.99,
+            "category": "Home",
+            "image": "/images/lamp.jpg",
+            "description": "LED desk lamp with adjustable brightness",
+            "stock": 18
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 43.989000000000004,
+      "shippingInfo": {
+        "name": "Abiola Mubarak",
+        "email": "abiolamubarakolamide05@gmail.com",
+        "address": "1 aliu banire street",
+        "city": "ojo",
+        "zipCode": "102101"
+      },
+      "date": "2025-11-02T08:55:05.435Z"
+    }
+  ]
+}
+```
+
+### Step 4: Start the Application
+
+You need to run **TWO commands in SEPARATE terminals:**
+
+#### Terminal 1 - Start the Mock API Server:
+```bash
+npm run api
+```
+
+**Wait until you see:**
+```
+Resources
+  http://localhost:5174/users
+  http://localhost:5174/products
+  http://localhost:5174/orders
+```
+
+✅ Keep this terminal running!
+
+#### Terminal 2 - Start the React App:
+```bash
+npm run dev
+```
+
+**Wait until you see:**
