@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/useRedux';
 import { loginSuccess } from '../store/authSlice';
 import { motion } from 'framer-motion';
@@ -11,12 +11,22 @@ import {
   Loader2
 } from 'lucide-react';
 
+interface LocationState {
+  from?: string;
+  message?: string;
+}
+
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const state = location.state as LocationState;
+  const from = state?.from || '/';
+  const message = state?.message;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +41,11 @@ export const LoginPage = () => {
     };
 
     dispatch(loginSuccess(user));
-    navigate('/products');
+
+    navigate(from, { replace: true });
   };
 
-  return (
+  return (          
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -64,6 +75,17 @@ export const LoginPage = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
         >
+          {/* Message Banner */}
+          {message && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+            >
+              <p className="text-blue-800 text-sm text-center">{message}</p>
+            </motion.div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Input */}
             <div className="space-y-2">
@@ -79,6 +101,7 @@ export const LoginPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter any email"
+                  required
                 />
               </div>
             </div>
@@ -97,6 +120,7 @@ export const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter any password"
+                  required
                 />
               </div>
             </div>
@@ -120,7 +144,7 @@ export const LoginPage = () => {
                   Sign In
                 </>
               )}
-            </motion.button>
+            </motion.button>           
           </form>      
         </motion.div>
       </motion.div>

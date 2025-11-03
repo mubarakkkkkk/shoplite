@@ -14,6 +14,7 @@ import {
 
 export const CartPage = () => {
   const { items } = useAppSelector((state) => state.cart);
+  const { user } = useAppSelector((state) => state.auth); 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -29,6 +30,19 @@ export const CartPage = () => {
   const handleUpdateQuantity = (id: string, quantity: number) => {
     if (quantity < 1) return;
     dispatch(updateQuantity({ id, quantity }));
+  };
+
+  const handleProceedToCheckout = () => {
+    if (!user) {     
+      navigate('/login', { 
+        state: { 
+          from: '/checkout',
+          message: 'Please log in to complete your purchase'
+        } 
+      });
+      return;
+    }
+    navigate('/checkout');
   };
 
   if (items.length === 0) {
@@ -231,15 +245,30 @@ export const CartPage = () => {
                 </div>
               </div>
 
+              {/* User status indicator */}
+              {!user && (
+                <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-yellow-800 text-sm text-center">
+                    Please log in to complete your purchase
+                  </p>
+                </div>
+              )}
+
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate('/checkout')}
+                onClick={handleProceedToCheckout}
                 className="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-3 sm:py-4 rounded-lg sm:rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg text-sm sm:text-base"
               >
                 <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-                Proceed to Checkout
+                {user ? 'Proceed to Checkout' : 'Login to Checkout'}
               </motion.button>
+
+              {!user && (
+                <p className="text-center text-gray-600 text-xs mt-3">
+                  You'll be redirected to login first
+                </p>
+              )}
             </motion.div>
           </div>
         </div>

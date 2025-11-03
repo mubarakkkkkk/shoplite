@@ -12,7 +12,7 @@ import {
   Home,
   ShoppingCart
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const Layout = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
@@ -21,6 +21,8 @@ export const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showCartNotification, setShowCartNotification] = useState(false);
+  const [previousCartCount, setPreviousCartCount] = useState(0);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -30,11 +32,25 @@ export const Layout = () => {
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-const navigation = [
-  { name: 'Products', path: '/products', icon: Home },
-  { name: 'Orders', path: '/orders', icon: Package },
-  { name: 'Cart', path: '/cart', icon: ShoppingCart },
-];
+  useEffect(() => {
+    if (cartCount > previousCartCount && previousCartCount > 0) {
+      setShowCartNotification(true);
+      
+      const timer = setTimeout(() => {
+        setShowCartNotification(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+    
+    setPreviousCartCount(cartCount);
+  }, [cartCount, previousCartCount]);
+
+  const navigation = [
+    { name: 'Products', path: '/products', icon: Home },
+    { name: 'Orders', path: '/orders', icon: Package },
+    { name: 'Cart', path: '/cart', icon: ShoppingCart },
+  ];
 
   const isActivePath = (path: string) => location.pathname === path;
 
@@ -154,18 +170,77 @@ const navigation = [
               </div>
             )}
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors md:hidden"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
-              ) : (
-                <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-              )}
-            </button>
+            {/* Mobile menu button with notification */}
+            <div className="relative md:hidden">
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                  setShowCartNotification(false); // Hide notification when menu is opened
+                }}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors relative"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                ) : (
+                  <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+                )}
+                
+                {/* Cart notification dot */}
+                {showCartNotification && (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="absolute -top-1 -right-1"
+                  >
+                    <div className="relative">
+                      {/* Pulsing animation */}
+                      <motion.div
+                        animate={{
+                          scale: [1, 1.2, 1],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                        className="w-3 h-3 bg-red-500 rounded-full"
+                      />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute inset-0 w-3 h-3 bg-red-400 rounded-full animate-ping"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+                
+                {/* Regular cart count badge */}
+                {!showCartNotification && cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-medium">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
+              </button>
+              
+              {/* Notification tooltip */}
+              <AnimatePresence>
+                {showCartNotification && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                    className="absolute top-full right-0 mt-2 z-50"
+                  >
+                    <div className="bg-green-500 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                      Item added to cart!
+                      <div className="absolute -top-1 right-2 w-2 h-2 bg-green-500 transform rotate-45" />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
